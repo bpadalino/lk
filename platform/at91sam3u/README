@@ -1,0 +1,9 @@
+Platform support for the ATMEL AT91SAM3U ARM Cortex-M3 microcontrollers.
+
+This is a base platform -- it needs to be specialized for a particular
+board (see sam3uek as an example of this) to be useful.  In particular
+it does not provide the platform/board.h (which must include the 
+correct at91sam3*h file and mux config).
+
+TODO:
+- everything
