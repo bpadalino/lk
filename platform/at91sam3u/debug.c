@@ -22,7 +22,7 @@
  */
 #include <debug.h>
 #include <printf.h>
-#include <platform/at91sam7.h>
+#include <platform/at91sam3u.h>
 #include <kernel/thread.h>
 #include <stdarg.h>
 

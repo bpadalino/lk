@@ -70,6 +70,8 @@ ARM_CPU := cortex-m3
 
 DEFINES += AT91_MCK_MHZ=96000000
 
+ASMFLAGS += -mthumb
+
 INCLUDES += \
 	-I$(LOCAL_DIR)/include
 

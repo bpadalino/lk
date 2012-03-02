@@ -24,10 +24,10 @@ $(BUILDDIR)/%.Ao: %.cpp $(SRCDEPS)
 $(BUILDDIR)/%.Ao: %.S $(SRCDEPS)
 	@$(MKDIR)
 	@echo compiling $<
-	$(NOECHO)$(CC) $(CFLAGS) $(ASMFLAGS) $(INCLUDES) -c $< -MD -MT $@ -MF $(@:%o=%d) -o $@
+	$(CC) $(CFLAGS) $(ASMFLAGS) $(INCLUDES) -c $< -MD -MT $@ -MF $(@:%o=%d) -o $@
 
 $(BUILDDIR)/%.o: %.S $(SRCDEPS)
 	@$(MKDIR)
 	@echo compiling $<
-	$(NOECHO)$(CC) $(CFLAGS) $(ASMFLAGS) $(INCLUDES) -c $< -MD -MT $@ -MF $(@:%o=%d) -o $@
+	$(CC) $(CFLAGS) $(ASMFLAGS) $(INCLUDES) -c $< -MD -MT $@ -MF $(@:%o=%d) -o $@
 

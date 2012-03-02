@@ -25,7 +25,7 @@
 #include <kernel/thread.h>
 #include <platform.h>
 #include <platform/interrupts.h>
-#include <platform/at91sam7.h>
+#include <platform/at91sam3u.h>
 #include <arch/arm.h>
 
 static int do_nothing()

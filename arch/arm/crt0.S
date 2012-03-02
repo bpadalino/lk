@@ -38,12 +38,17 @@ reset:
 	mrc		p15, 0, r0, c1, c0, 0
 		/* XXX this is currently for arm926, revist with armv6 cores */
 		/* new thumb behavior, low exception vectors, i/d cache disable, mmu disabled */
+#if ARM_ISA_THUMB_ONLY
+	/* ARM Thumb Only Instructions */
+	/* TODO: Fill this in */
+#else
 	bic		r0, r0, #(1<<15| 1<<13 | 1<<12)
 	bic		r0, r0, #(1<<2 | 1<<0)
 		/* enable alignment faults */
 	orr		r0, r0, #(1<<1)
 	mcr		p15, 0, r0, c1, c0, 0
-#endif
+#endif /* ARM_ISA_THUMB_ONLY */
+#endif /* ARM_WITH_CP15 */
 
 #if WITH_CPU_EARLY_INIT
 	/* call platform/arch/etc specific init code */
@@ -62,8 +67,12 @@ reset:
 	ldr		r2, =__data_end	
 
 .Lrelocate_loop:
+#ifdef ARM_ISA_THUMB_ONLY
+	/* Thumb Only */
+#else
 	ldr		r3, [r0], #4
 	str		r3, [r1], #4
+#endif /* ARM_ISA_THUMB_ONLY */
 	cmp		r1, r2
 	bne		.Lrelocate_loop
 
@@ -74,6 +83,7 @@ reset:
 .ltorg
 
 .Lstack_setup:
+#if ARM_WITH_CPSR
 	/* set up the stack for irq, fiq, abort, undefined, system/user, and lastly supervisor mode */
 	mrs     r0, cpsr
 	bic     r0, r0, #0x1f
@@ -102,7 +112,9 @@ reset:
 	orr		r1, r0, #0x13 // supervisor
 	msr		cpsr_c, r1
 	mov		sp, r2
-
+#else
+	/* TODO: Fill this in */
+#endif /* ARM_WITH_CPSR */
 	/* copy the initialized data segment out of rom if necessary */
 	ldr		r0, =__data_start_rom
 	ldr		r1, =__data_start
@@ -113,8 +125,12 @@ reset:
 
 .L__copy_loop:
 	cmp		r1, r2
+#if ARM_ISA_THUMB_ONLY
+	/* TODO: Fix this */
+#else
 	ldrlt	r3, [r0], #4
 	strlt	r3, [r1], #4
+#endif /* ARM_ISA_THUMB_ONLY */
 	blt		.L__copy_loop
 
 .L__do_bss:
@@ -124,7 +140,11 @@ reset:
 	mov		r2, #0
 .L__bss_loop:
 	cmp		r0, r1
+#if ARM_ISA_THUMB_ONLY
+	/* TODO: Fix this */
+#else
 	strlt	r2, [r0], #4
+#endif /* ARM_ISA_THUMB_ONLY */
 	blt		.L__bss_loop
 
 	bl		kmain
